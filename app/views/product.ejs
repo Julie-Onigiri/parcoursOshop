@@ -12,15 +12,15 @@
 
 <div class="product-section container">
     <div class="product-section-image">
-        <img src="/img/kenshiro.jpg" alt="" />
+        <img src="/img/<%= product.name.toLowerCase() %>.png" alt="" />
     </div>
     <div class="product-section-information">
-        <h1 class="product-section-title">Titre du produit</h1>
-        <div class="product-section-price">1200€</div>
+        <h1 class="product-section-title"><%=product.title%>></h1>
+        <div class="product-section-price"><%=product.price%></div>
 
         <p>Lorem ipsum</p>
 
-        <form action="/cart/1" method="POST">
+        <form action="/cart/<%= product.id%>" method="POST">
             <input class="button" value="Ajouter au panier" type="submit">
         </form>
     </div>

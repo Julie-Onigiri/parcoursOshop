@@ -7,15 +7,15 @@ const catalogController = {
 
     async productsList (req, res)  {
         try {
-            // todo, ici il faudra les vrais produits et catégories de la db
-            const products =await Product.findAll();
+            
+            // const products =await Product.findAll();
             // console.log(JSON.stringify(products, null, 2));
-            const categories =await Category.findAll() ;
-            console.log(JSON.stringify(categories, null, 2));
+             const categories =await Category.findAll() ;
+             console.log(JSON.stringify(categories, null, 2));
 
             res.render('shop', { 
                 categories,
-                products 
+                // products 
             });
 
         } catch (error) {
@@ -31,10 +31,20 @@ const catalogController = {
     },
 
     product: async (req, res) => {
-        const product = await Product.findByPk(req.params.id);
-        
+        try {
+             const productId = parseInt(req.params.id);
+             const product = await Product.findByPk(
+                productId,{
+                    include:['category']
+                }
+             )
+
         // todo, récupérer le produit demandé en base de données.
         res.render('product');
+    }catch (error) {
+        console.error(error.message)
+        res.status(500).render('500')
+      }
     },
 
     cart: (req, res) => {
