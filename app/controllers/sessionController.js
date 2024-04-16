@@ -9,19 +9,35 @@ const sessionController = {
     login: async (req, res) => {
         try {
             const { email, password } = req.body;
-            // !! Votre code à partir d'ici
+         
 
-            // On récupère user avec le role
-            // Est-ce que l'utilisateur existe en BDD ?
-            // Sélectionner user avec email et inclure le role, si on ne le trouve pas :
-            //      on envoie un message d'erreur dans un objet:  {error: "Utilisateur ou mot de passe incorrect"} et on render `login` en lui passant l'erreur
-            // Sinon on continue.
+             // On vient chercher si un utilisateur correspond a l'email tape dans le formulaire
+             const userFound = await User.findOne({
+                where: {
+                    email: email
+                }
+            })
 
-            // Le mot de passe est il correct ?
-            // On compare le mots de passe du formulaire avec celui de l'utilisateur
-            //      Si le mot de passe est incorrect : on envoie un message d'erreur dans un objet:  {error: "Utilisateur ou mot de passe incorrect"} et on render `login` en lui passant l'erreur
+            // Sequelize nous renvoi null si il ne trouve ou bien les infos du User trouve
+            if (!userFound) {
+                throw new Error('La combinaison email/mot de passe est invalide')
+            }
 
-            // On ajoute user a la session
+            // Si jamais il y a bien un utilisateur avec cet email
+            // Il faut verifier si le mot de passe correspond
+            
+            const passwordMatched = await bcrypt.compare(password, userFound.password);
+
+            // Si les deux mots de passe ne sont pas egaux, message erreur
+            if (!passwordMatched) {
+                throw new Error('La combinaison email/mot de passe est invalide')
+            }
+
+            // On sait que le couple id/pwd est valide
+            // On connecte donc l'utilisateur
+            req.session.userId = userFound.id;
+
+          
 
             // On enlève le mot de passe de la session.
 
@@ -33,10 +49,10 @@ const sessionController = {
         }
     },
 
-    logout: (req, res) => {
-        // !! Votre code ici
-        res.redirect('/');
-    },
+    logout(req, res) {
+        req.session.destroy();
+        res.redirect('/login')
+    }
 };
 
 module.exports = sessionController;
