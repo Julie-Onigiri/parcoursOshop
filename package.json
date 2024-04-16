@@ -4,7 +4,11 @@
     "description": "O-shop",
     "main": "index.js",
     "scripts": {
-        "dev": "nodemon"
+      "start": "node index",
+        "dev": "nodemon",
+        "db:create": "psql -U shoppingcart -d shoppingcart -f ./data/structure-data.sql",
+        "db:seed":"psql -U shoppingcart -d shoppingcart -f ./data/populates-tables.sql",
+        "db:reset": "npm run db:create && npm run db:seed"
     },
     "author": "oclock.io",
     "license": "ISC",

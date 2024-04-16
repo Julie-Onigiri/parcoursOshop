@@ -1,8 +1,8 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = require('../database');
+const { DataTypes, Model } = require('sequelize');
+const sequelize = require('../db/client-sequelize');
 const Role = require('./Role.js');
 
-class User extends Sequelize.Model {}
+class User extends Model {}
 
 User.init(
     {
@@ -19,13 +19,11 @@ User.init(
             type: DataTypes.STRING,
             allowNull: false,
         },
-        role_id: {
-            type: DataTypes.INTEGER,
-        },
+       
     },
     {
         sequelize,
-        tableName: 'users',
+        tableName: 'user',
     }
 );
 
