@@ -1,5 +1,5 @@
 # Oshop
-Oshop, un projet développé dans le cadre de ma formation chez O'clock.
+Oshop, un projet développé dans le cadre de ma formation chez O'Clock.
 
 ## Objectifs
 
